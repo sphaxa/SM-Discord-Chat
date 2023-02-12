@@ -59,11 +59,11 @@ public void OnClientSayCommand_Post(int client, const char[] command, const char
 
     if (client > 0) // Check if client is NOT console.
     {
-        if (BaseComm_IsClientGagged(client) || IsChatTrigger()) // Check if client is gagged. || Check if text was a recognized command/trigger.
+        if (BaseComm_IsClientGagged(client)) // Check if client is gagged.
         {
             if (g_cvDebug.BoolValue)
             {
-                PrintToConsole(0, "[Infra-DCR] DEBUG: Client %i is gagged or used a chat trigger, aborting.", client);
+                PrintToConsole(0, "[Infra-DCR] DEBUG: Client %i is gagged, aborting.", client);
             }
             return;
         }
