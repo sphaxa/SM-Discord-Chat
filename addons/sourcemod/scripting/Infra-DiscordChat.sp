@@ -96,7 +96,7 @@ public void OnClientSayCommand_Post(int client, const char[] command, const char
 
 void sendWebhook(int client, char[] text)
 {
-    char webhook[1024], finalText[512], clientName[128], steamID[64];
+    char webhook[1024], finalText[512], clientName[128];
     GetConVarString(g_cvWebhook, webhook, sizeof(webhook));
     if (StrEqual(webhook, ""))
 	{
@@ -107,14 +107,11 @@ void sendWebhook(int client, char[] text)
     if (client == 0)
     {
         Format(clientName, sizeof(clientName), "CONSOLE")
-        Format(steamID, sizeof(steamID), "-");
     }
 
     else
     {
         GetClientName(client, clientName, sizeof(clientName));
-        GetClientAuthId(client, AuthId_Steam2, steamID, sizeof(steamID), true);
-        Format(clientName, sizeof(clientName), "%s (%s)", clientName, steamID);
     }
 
     ReplaceString(clientName, 32, "@", "", false);
@@ -141,7 +138,7 @@ void sendWebhook(int client, char[] text)
 
 void sendSimpleWebhook(int client, char[] text)
 {
-    char webhook[1024], finalText[512], clientName[32], steamID[64];
+    char webhook[1024], finalText[512], clientName[32];
     GetConVarString(g_cvWebhook, webhook, sizeof(webhook));
     if (StrEqual(webhook, ""))
 	{
@@ -152,20 +149,18 @@ void sendSimpleWebhook(int client, char[] text)
     if (client == 0)
     {
         Format(clientName, sizeof(clientName), "CONSOLE")
-        Format(steamID, sizeof(steamID), "-");
     }
 
     else
     {
         GetClientName(client, clientName, sizeof(clientName));
-        GetClientAuthId(client, AuthId_Steam2, steamID, sizeof(steamID), true);
     }
 
     ReplaceString(clientName, 32, "@", "", false);
     ReplaceString(clientName, 32, "\\", "", false);
     ReplaceString(clientName, 32, "`", "", false);
 
-    Format(finalText, sizeof(finalText), "%s (`%s`): `%s`", clientName, steamID, text);
+    Format(finalText, sizeof(finalText), "%s: `%s`", clientName, text);
 
     DiscordWebHook hook = new DiscordWebHook(webhook);
     hook.SlackMode = true;
